@@ -5,6 +5,8 @@ import com.keuin.kessentialfabric.util.SoundPlayer;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -113,6 +115,10 @@ public class CommandHandler {
             // If you want to mod a shit project, then you have to use a crappy way.
             message = "";
         }
+
+        // Set glowing effect
+        final int glowingSeconds = 30;
+        ((ServerPlayerEntity) entity).addStatusEffect(new StatusEffectInstance(StatusEffects.GLOWING, glowingSeconds * 20));
 
         // Print broadcast text
         PrintUtil.broadcast(String.format("[ %s @ %s in %s ] %s", playerId, posString, worldName, message));
