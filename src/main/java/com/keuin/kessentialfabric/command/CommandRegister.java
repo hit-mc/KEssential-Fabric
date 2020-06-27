@@ -14,7 +14,7 @@ public final class CommandRegister {
                 CommandManager.literal("at")
                         .then(
                                 CommandManager.argument("player", StringArgumentType.string())
-                                        .suggests(PlayerNameSuggestionProvider.getProvider())
+                                        .suggests(PlayerNameSuggestionProvider.getAtCommandTargetSuggestionProvider())
                                         .executes(CommandHandler::at)
                                         .then(CommandManager.argument("message", StringArgumentType.greedyString()).executes(CommandHandler::at))
                         )
@@ -30,6 +30,16 @@ public final class CommandRegister {
                 CommandManager.literal("pos")
                         .executes(CommandHandler::here)
                         .then(CommandManager.argument("message", StringArgumentType.greedyString()).executes(CommandHandler::here))
+        );
+
+        // register /where for querying player location
+        dispatcher.register(
+                CommandManager.literal("where")
+                        .then(
+                                CommandManager.argument("player", StringArgumentType.string())
+                                        .suggests(PlayerNameSuggestionProvider.getUserIdSuggestionProvider())
+                                        .executes(CommandHandler::where)
+                        )
         );
 
     }
