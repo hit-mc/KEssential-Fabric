@@ -1,0 +1,15 @@
+{
+    "required": true,
+    "minVersion": "0.8",
+    "package": "com.keuin.kessentialfabric.mixin",
+    "compatibilityLevel": "JAVA_8",
+    "mixins": [
+      "EntitySendPacketsMixin"
+    ],
+    "client": [
+    ],
+    "injectors": {
+      "defaultRequire": 1
+    }
+  }
+  
