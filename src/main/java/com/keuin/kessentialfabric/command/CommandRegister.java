@@ -32,13 +32,13 @@ public final class CommandRegister {
                         .then(CommandManager.argument("message", StringArgumentType.greedyString()).executes(CommandHandler::here))
         );
 
-        // register /where for querying player location
+        // register /whereis for querying player location
         dispatcher.register(
-                CommandManager.literal("where")
+                CommandManager.literal("whereis")
                         .then(
                                 CommandManager.argument("player", StringArgumentType.string())
                                         .suggests(PlayerNameSuggestionProvider.getUserIdSuggestionProvider())
-                                        .executes(CommandHandler::where)
+                                        .executes(CommandHandler::whereIs)
                         )
         );
 

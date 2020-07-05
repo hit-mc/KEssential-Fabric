@@ -124,7 +124,7 @@ public class CommandHandler {
      * @param context the context.
      * @return stat code.
      */
-    public static int where(CommandContext<ServerCommandSource> context) {
+    public static int whereIs(CommandContext<ServerCommandSource> context) {
         MinecraftServer server = context.getSource().getMinecraftServer();
 
         // Get desired player
@@ -150,7 +150,7 @@ public class CommandHandler {
     private static String getPlayerEntityLocationString(ServerPlayerEntity entity) {
         String rawWorldName = entity.getEntityWorld().getDimension().getType().toString();
         String worldName = rawWorldName.startsWith("minecraft:") ? rawWorldName.substring("minecraft:".length()) : rawWorldName;
-        String posString = String.format("(%.0f, %.0f) with y=%.0f", entity.getPos().getX(), entity.getPos().getZ(), entity.getPos().getY());
+        String posString = String.format("(%.1f, %.1f) with y=%.1f", entity.getPos().getX(), entity.getPos().getZ(), entity.getPos().getY());
         return String.format("%s in %s", posString, worldName);
     }
 
