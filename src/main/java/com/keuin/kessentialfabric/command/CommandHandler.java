@@ -12,9 +12,11 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.math.Vec3d;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 public class CommandHandler {
@@ -96,7 +98,7 @@ public class CommandHandler {
 
         // Get player info
         String playerId = entity.getName().getString();
-        String playerLocationString = CommandHandler.getPlayerEntityLocationString((ServerPlayerEntity) entity);
+        String playerLocationString = CommandHandler.getEntityVoxelMapLocationString(entity);
 
         // Get message (optional)
         String message;
@@ -134,7 +136,7 @@ public class CommandHandler {
             PrintUtil.msgErr(context, String.format("Player %s is not online.", playerId));
             return FAILED;
         } else {
-            String locationString = getPlayerEntityLocationString(serverPlayerEntity);
+            String locationString = getEntityVoxelMapLocationString(serverPlayerEntity);
             PrintUtil.msgInfo(context, String.format("Player %s is at %s.", serverPlayerEntity.getName().getString(), locationString));
         }
 
@@ -149,9 +151,19 @@ public class CommandHandler {
      */
     private static String getPlayerEntityLocationString(ServerPlayerEntity entity) {
         String rawWorldName = entity.getEntityWorld().getDimension().getType().toString();
-        String worldName = rawWorldName.startsWith("minecraft:") ? rawWorldName.substring("minecraft:".length()) : rawWorldName;
+        String dimName = rawWorldName.startsWith("minecraft:") ? rawWorldName.substring("minecraft:".length()) : rawWorldName;
         String posString = String.format("(%.1f, %.1f) with y=%.1f", entity.getPos().getX(), entity.getPos().getZ(), entity.getPos().getY());
-        return String.format("%s in %s", posString, worldName);
+        return String.format("%s in %s", posString, dimName);
+    }
+
+    private static String getEntityVoxelMapLocationString(Entity entity) {
+        Objects.requireNonNull(entity);
+        String name = entity.getEntityName();
+        Vec3d pos = entity.getPos();
+        String rawWorldName = entity.getEntityWorld().getDimension().getType().toString();
+        String dimName = rawWorldName.startsWith("minecraft:") ? rawWorldName.substring("minecraft:".length()) : rawWorldName;
+        // trueKeuin @ [x:-9, y:13, z:-127, dim:overworld]
+        return String.format("[x:%.0f, y:%.0f, z:%.0f, dim:%s]", pos.x, pos.y, pos.z, dimName);
     }
 
 }
