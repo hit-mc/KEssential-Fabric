@@ -33,7 +33,7 @@ public class CommandHandler {
      * @return stat code.
      */
     public static int at(CommandContext<ServerCommandSource> context) {
-        MinecraftServer server = context.getSource().getMinecraftServer();
+        MinecraftServer server = context.getSource().getServer();
         Entity entity = context.getSource().getEntity();
         boolean atAll = false; // if @all
 
@@ -89,7 +89,7 @@ public class CommandHandler {
      * @return stat code.
      */
     public static int here(CommandContext<ServerCommandSource> context) {
-        MinecraftServer server = context.getSource().getMinecraftServer();
+        MinecraftServer server = context.getSource().getServer();
         Entity entity = context.getSource().getEntity();
 
         // If the command is not executed by a player
@@ -127,7 +127,7 @@ public class CommandHandler {
      * @return stat code.
      */
     public static int whereIs(CommandContext<ServerCommandSource> context) {
-        MinecraftServer server = context.getSource().getMinecraftServer();
+        MinecraftServer server = context.getSource().getServer();
 
         // Get desired player
         String playerId = StringArgumentType.getString(context, "player");
@@ -143,24 +143,11 @@ public class CommandHandler {
         return SUCCESS;
     }
 
-    /**
-     * Get specific player location string in the format "(100,200) with y=63 in world overworld".
-     *
-     * @param entity the player entity.
-     * @return the location string.
-     */
-    private static String getPlayerEntityLocationString(ServerPlayerEntity entity) {
-        String rawWorldName = entity.getEntityWorld().getDimension().getType().toString();
-        String dimName = rawWorldName.startsWith("minecraft:") ? rawWorldName.substring("minecraft:".length()) : rawWorldName;
-        String posString = String.format("(%.1f, %.1f) with y=%.1f", entity.getPos().getX(), entity.getPos().getZ(), entity.getPos().getY());
-        return String.format("%s in %s", posString, dimName);
-    }
-
     private static String getEntityVoxelMapLocationString(Entity entity) {
         Objects.requireNonNull(entity);
         String name = entity.getEntityName();
         Vec3d pos = entity.getPos();
-        String rawWorldName = entity.getEntityWorld().getDimension().getType().toString();
+        String rawWorldName = entity.getEntityWorld().getDimension().getEffects().toString();
         String dimName = rawWorldName.startsWith("minecraft:") ? rawWorldName.substring("minecraft:".length()) : rawWorldName;
         // trueKeuin @ [x:-9, y:13, z:-127, dim:overworld]
         return String.format("[x:%.0f, y:%.0f, z:%.0f, dim:%s]", pos.x, pos.y, pos.z, dimName);
