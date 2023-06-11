@@ -3,11 +3,16 @@ package com.keuin.kessentialfabric.command;
 import com.keuin.kessentialfabric.command.suggestion.PlayerNameSuggestionProvider;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
+import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 
 public final class CommandRegister {
-    public static void registerCommands(CommandDispatcher<ServerCommandSource> dispatcher) {
+    public static void registerCommands(
+            CommandDispatcher<ServerCommandSource> dispatcher,
+            CommandRegistryAccess commandRegistryAccess,
+            CommandManager.RegistrationEnvironment registrationEnvironment
+    ) {
 
         // register /at for chat with a player mentioned
         dispatcher.register(

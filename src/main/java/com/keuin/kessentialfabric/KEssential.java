@@ -4,13 +4,13 @@ import com.keuin.kessentialfabric.command.CommandRegister;
 import com.keuin.kessentialfabric.command.suggestion.PlayerNameSuggestionProvider;
 import com.keuin.kessentialfabric.util.PrintUtil;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.event.server.ServerStartCallback;
-import net.fabricmc.fabric.api.registry.CommandRegistry;
+import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.server.MinecraftServer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class KEssential implements ModInitializer, ServerStartCallback {
+public class KEssential implements ModInitializer, ServerLifecycleEvents.ServerStarting {
 
 	private static final Logger LOGGER = LogManager.getLogger();
 
@@ -21,12 +21,12 @@ public class KEssential implements ModInitializer, ServerStartCallback {
 		// Proceed with mild caution.
 
 		System.out.println("Binding events and commands ...");
-		CommandRegistry.INSTANCE.register(false, CommandRegister::registerCommands);
-		ServerStartCallback.EVENT.register(this);
+		CommandRegistrationCallback.EVENT.register(CommandRegister::registerCommands);
+		ServerLifecycleEvents.SERVER_STARTING.register(this);
 	}
 
 	@Override
-	public void onStartServer(MinecraftServer server) {
+	public void onServerStarting(MinecraftServer server) {
 		// Initialize player manager reference
 		PrintUtil.setPlayerManager(server.getPlayerManager());
 		// Initialize suggestion provider server

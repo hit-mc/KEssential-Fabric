@@ -1,12 +1,11 @@
 package com.keuin.kessentialfabric.util;
 
 import com.mojang.brigadier.context.CommandContext;
-import net.minecraft.network.MessageType;
-import net.minecraft.network.Packet;
+import net.minecraft.network.message.MessageType;
 import net.minecraft.network.packet.s2c.play.GameMessageS2CPacket;
 import net.minecraft.server.PlayerManager;
 import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -41,9 +40,9 @@ public final class PrintUtil {
         synchronized (syncBroadcast) {
             if (fuckMojang != null){
                 PrintUtil.info("Trying to send");
-                LiteralText literalText = new LiteralText(message);
+                MutableText literalText = Text.literal(message);
                 literalText.setStyle(style);
-                fuckMojang.sendToAll(new GameMessageS2CPacket(literalText, MessageType.CHAT, Util.NIL_UUID) );
+                fuckMojang.broadcast(literalText, false);
             }
 
             else
@@ -85,9 +84,9 @@ public final class PrintUtil {
 
     private static CommandContext<ServerCommandSource> message(CommandContext<ServerCommandSource> context, String messageText, boolean broadcastToOps, Style style) {
         synchronized (syncMessage) {
-            LiteralText text = new LiteralText(messageText);
+            MutableText text = Text.literal(messageText);
             text.setStyle(style);
-            context.getSource().sendFeedback(text, broadcastToOps);
+            context.getSource().sendFeedback(() -> text, broadcastToOps);
         }
         return context;
     }

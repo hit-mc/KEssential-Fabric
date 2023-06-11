@@ -147,7 +147,7 @@ public class CommandHandler {
         Objects.requireNonNull(entity);
         String name = entity.getEntityName();
         Vec3d pos = entity.getPos();
-        String rawWorldName = entity.getEntityWorld().getDimension().getEffects().toString();
+        String rawWorldName = entity.getEntityWorld().getDimension().effects().toString();
         String dimName = rawWorldName.startsWith("minecraft:") ? rawWorldName.substring("minecraft:".length()) : rawWorldName;
         // trueKeuin @ [x:-9, y:13, z:-127, dim:overworld]
         return String.format("[x:%.0f, y:%.0f, z:%.0f, dim:%s]", pos.x, pos.y, pos.z, dimName);
